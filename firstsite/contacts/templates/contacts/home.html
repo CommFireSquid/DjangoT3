@@ -1,0 +1,86 @@
+{% extends "contacts/header.html" %}
+
+{% block content %}
+<table style="width:70%;">
+	<tbody width="100%">
+		<tr>
+			<td class="TopBox" colspan=2 style="background-color: #DCDCDC;text-align:center;">
+				<div style="background-color:#B0C4DE;border-radius:25px;border-color:#E6E6FA">
+					<h1>Welcome to the Contacts Storage System!</h1>
+					<p><strong>NOTE:</strong> Leave CID blank when entering new contacts see bottom of page for more info</p>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="TopBox" colspan=2 style="background-color: #DCDCDC;text-align:center;">
+				<form name="searchForm" method='POST'> {% csrf_token %}
+					<table>
+						<tr>
+							<td style="text-align:right">{{ searchForm.as_p }}</td>
+							<td style="text-align:left;"><input type="submit" name="searchBut" value="Search" style="width: 10em; height: 1.5em;background-color:#32CD32;border-radius:25px;border-color:lime;font-size:18pt"></td>
+						</tr></table>
+					<!--<input type="text" name="searchBar" size="90" placeholder="Enter Name, Email, or Phone Number Here" style="border-radius:5px">-->		
+				</form>
+			</td>
+		</tr>
+		<tr>
+			<td class="BoxLeftTD" style="background-color: #DCDCDC;text-align: center;list-style: none;">
+				<div class="BoxLeft">
+					<h2>Contact List Controls:</h2>
+					<form name="contactEntry" method='POST'> {% csrf_token %}
+						{{ contactsForm.as_ul }}
+						<!-- <table style="width:100%;">
+							<tr>
+								<td style="text-align:right">First Name:</td>
+								<td style="text-align:left"><input type="text" name='fname' id='fname' placeholder="Jon" required style="border-radius:5px"></td>
+							</tr>
+							<tr>
+								<td style="text-align:right">Middle Name (or Initial):</td>
+								<td style="text-align:left"><input type="text" name='mname' id='mname' placeholder="Adam" required style="border-radius:5px"></td>
+							</tr>
+							<tr>
+								<td style="text-align:right">Last Name:</td>
+								<td style="text-align:left"><input type="text" name='lname' id='lname' placeholder="Doe" required style="border-radius:5px"></td>
+							</tr>
+							<tr>
+								<td style="text-align:right">Phone:</td>
+								<td style="text-align:left"><input type="tel" name="number" placeholder="18005557878" required style="border-radius:5px"></td>
+							</tr>
+							<tr>
+								<td style="text-align:right">Email:</td>
+								<td style="text-align:left"><input type="text" name="email" placeholder="jdoe@example.com" required style="border-radius:5px"></td>
+							</tr>
+							<tr>
+								<td style="text-align:right">CID:</td>
+								<td style="text-align:left"><input type="number" name="number" style="border-radius:5px" placeholder="Optional"></td>
+							</tr>
+							<tr>
+								<td colspan="2" style="text-align:center;"><input type="submit" name="enterData" value="Submit Info" style="background-color:#32CD32;border-radius:25px;border-color:lime;"></td>
+							</tr> -->
+							<input type="submit" name="enterData" value="Submit Info" style="background-color:#32CD32;border-radius:25px;border-color:lime;">
+						<!--</table>-->
+					</form>
+					<div style="border-color:#800000;border-size:4px;border-style:solid;margin-top:14px;">
+						<form name="contactDelete" method='POST'> {% csrf_token %}
+							{{ deleteForm.as_p }}
+							<input type="submit" name="enterData" value="Delete Contact" style="background-color:#FF0000;border-radius:25px;border-color:#800000;border-width:4px">
+						</form>
+						<p>To delete all contacts enter: 000</p>
+					</div>
+				</div>
+			</td>
+			<td class="BoxRightTD" style="background-color: #DCDCDC">
+				<div class="BoxRight">
+					<textarea rows="50" cols="75" style="resize: vertical;">{{ result }}</textarea>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="background-color: #DCDCDC;text-align:center;"><p>A note on the contacts page: The CID field is the primary key in the database associated with a contact. This will prevent two contacts with the same name from overwritting each other. This should be left blank when entering a new contact and populated when editing a contact. The CID can be found by searching for a contact and copy/pasting the CID from the result.</p></td>
+		</tr>
+	</tbody>
+</table>
+
+<!-- {% include "contacts/includes/results.html" %} -->
+<!-- action='' -->
+{% endblock %}
