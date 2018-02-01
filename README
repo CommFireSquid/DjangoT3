@@ -1,4 +1,4 @@
 The file here "firstsite" is a django project directory. 
 This project is a basic contact list supported on my Ubuntu v16.04 server running with nginx and uwsgi interfaces. 
 Data handling is done with the default sqlite database package included within python. 
-There is no current method for reading the data out of the database but it is in development currently.
+You can now search and display information from the database with a simple query in the search section.

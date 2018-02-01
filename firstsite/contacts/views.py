@@ -4,6 +4,7 @@ from contacts.forms import ContactForm
 from contacts.forms import SearchForm
 from contacts.forms import DeleteForm
 from contacts.models import ContactTable
+from django.db.models import Q
 import sqlite3
 
 '''def index(request):
@@ -36,7 +37,7 @@ class Index(TemplateView):
 			lastName = form.cleaned_data['lastName']
 			phone = form.cleaned_data['phone']
 			email = form.cleaned_data['email']
-			comment = form.cleaned_data['comment']
+			note = form.cleaned_data['note']
 			cid = form.cleaned_data['cid']
 
 
@@ -53,7 +54,7 @@ class Index(TemplateView):
 					callBack.lastName = lastName
 					callBack.phone = phone
 					callBack.email = email
-					callBack.comment = comment
+					callBack.note = note
 					callBack.cid = cid
 					callBack.save()
 					result = 'Contact Updated'
@@ -66,12 +67,36 @@ class Index(TemplateView):
 			return render(request, self.template_name, args)
 		
 		elif form2.is_valid():
+			result = ''
 			searchItem = form2.cleaned_data['searchValueF']
 			searchItem2 = form2.cleaned_data['searchValueM']
 			searchItem3 = form2.cleaned_data['searchValueL']
 			searchItem4 = form2.cleaned_data['searchValueP']
 
-			result = searchItem
+
+			q = {}
+			if searchItem != None and searchItem != '':
+				q.update({'firstName':searchItem})
+			if searchItem2 != None and searchItem2 != '':
+				q.update({'midName':searchItem2})
+			if searchItem3 != None and searchItem3 != '':
+				q.update({'lastName':searchItem3})
+			if searchItem4 != None  and searchItem4 != '':
+				q.update({'phone':searchItem4})
+
+			resultVar = ContactTable.objects.filter(**q)
+
+			for item in resultVar:
+				if item.midName != None:
+					result += 'Name: {} {} {}\n'.format(item.firstName, item.midName, item.lastName)
+				else:
+					result += 'Name: {} {}\n'.format(item.firstName, item.lastName)
+
+				result += 'Phone Number: {}\nEmail Addr: {}\nCID: {}\nNote: {}\n---------------------------------\n'.format(item.phone, item.email, item.id, item.note)
+
+
+			if result == '':
+				result = 'No Results Found'
 			args = {'deleteForm':deleteForm, 'searchForm':searchForm, 'contactsForm':contactsForm, 'result':result}
 			return render(request, self.template_name, args)
 
